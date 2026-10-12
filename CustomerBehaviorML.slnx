@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/CustomerBehaviorML.Core/CustomerBehaviorML.Core.csproj" />
+    <Project Path="src/CustomerBehaviorML.Predictor/CustomerBehaviorML.Predictor.csproj" />
+    <Project Path="src/CustomerBehaviorML.Trainer/CustomerBehaviorML.Trainer.csproj" />
+  </Folder>
+</Solution>
