@@ -1,0 +1,54 @@
+## ==========================================
+## Build & Compiled Outputs (.NET / C#)
+## ==========================================
+[Bb]in/
+[Oo]bj/
+out/
+publish/
+*.user
+*.userosscache
+*.sln.docstates
+
+## ==========================================
+## Datasets & ML Artifacts (Large Files)
+## ==========================================
+data/*.csv
+*.csv
+
+models/*.zip
+*.zip
+
+## ==========================================
+## IDE & Editors
+## ==========================================
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userprefs
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+## ==========================================
+## Operating System Files
+## ==========================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSSharedFileList
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
