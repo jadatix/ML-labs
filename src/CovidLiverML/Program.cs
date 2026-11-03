@@ -25,7 +25,7 @@ namespace CovidLiverML
             var pipelinePrep = mlContext.Transforms.CustomMapping<PatientData, PatientDataTransformed>(
                 (input, output) =>
                 {
-                    output.Cancer = input.Cancer;
+                    output.AliveDead = input.AliveDead;
                     output.Year = input.Year;
                     output.Month = input.Month;
                     output.Bleed = input.Bleed;
@@ -53,7 +53,7 @@ namespace CovidLiverML
                     output.PrevKnownCirrhosis = input.PrevKnownCirrhosis;
                     output.MonthsFromLastSurveillance = input.MonthsFromLastSurveillance;
 
-                    output.Label = input.AliveDead != null && input.AliveDead.Equals("\"Dead\"", StringComparison.OrdinalIgnoreCase);
+                    output.Label = input.Cancer != null && input.Cancer.Equals("\"Y\"", StringComparison.OrdinalIgnoreCase);
                 }, contractName: null)
 
                 .Append(mlContext.Transforms.ReplaceMissingValues("Age", replacementMode: MissingValueReplacingEstimator.ReplacementMode.Mean))
@@ -66,7 +66,7 @@ namespace CovidLiverML
 
                 .Append(mlContext.Transforms.Categorical.OneHotEncoding(new[]
                 {
-                    new InputOutputColumnPair("CancerEncoded", nameof(PatientData.Cancer)),
+                    new InputOutputColumnPair("AliveDeadEncoded", nameof(PatientData.AliveDead)),
                     new InputOutputColumnPair("YearEncoded", nameof(PatientData.Year)),
                     new InputOutputColumnPair("MonthEncoded", nameof(PatientData.Month)),
                     new InputOutputColumnPair("BleedEncoded", nameof(PatientData.Bleed)),
@@ -88,7 +88,7 @@ namespace CovidLiverML
                 }))
 
                 .Append(mlContext.Transforms.Concatenate("Features",
-                    "CancerEncoded", "YearEncoded", "MonthEncoded", "BleedEncoded", "ModePresentationEncoded",
+                    "AliveDeadEncoded", "YearEncoded", "MonthEncoded", "BleedEncoded", "ModePresentationEncoded",
                     "GenderEncoded", "EtiologyEncoded", "CirrhosisEncoded", "HccTnmStageEncoded", "HccBclcStageEncoded",
                     "IccTnmStageEncoded", "TreatmentGrpsEncoded", "TypeOfIncidentalFindingEncoded", "SurveillanceProgrammeEncoded",
                     "SurveillanceEffectivenessEncoded", "ModeOfSurveillanceDetectionEncoded", "DateIncidentSurveillanceScanEncoded",
@@ -145,6 +145,7 @@ namespace CovidLiverML
                 SurveillanceEffectiveness = "Consistent",
                 ModeOfSurveillanceDetection = "US",
                 TimeDiagnosis1stTx = 0.47f,
+                AliveDead = "Alive",
                 DateIncidentSurveillanceScan = "NA",
                 PS = "0",
                 TimeMdm1stTreatment = 0.7f,
@@ -154,8 +155,8 @@ namespace CovidLiverML
             };
 
             var pred = predictionEngine.Predict(sample);
-            Console.WriteLine($"Пацієнт: Вік {sample.Age}, Стать {sample.Gender}, Рак {sample.Cancer}, Лікування {sample.TreatmentGrps}");
-            Console.WriteLine($"Прогноз смертності: {(pred.PredictedLabel ? "Dead (Високий ризик)" : "Alive (Низький ризик)")}");
+            Console.WriteLine($"Пацієнт: Вік {sample.Age}, Стать {sample.Gender}, Живий {sample.AliveDead}, Лікування {sample.TreatmentGrps}");
+            Console.WriteLine($"Прогноз раку: {(pred.PredictedLabel ? "Y" : "N")}");
             Console.WriteLine($"Імовірність: {pred.Probability:P2}");
         }
 
